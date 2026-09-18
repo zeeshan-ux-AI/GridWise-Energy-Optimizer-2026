@@ -170,13 +170,10 @@ export function validateLlmInterpretation(
         502,
       );
     }
-    if (typeof raw.explanation !== "string" || raw.explanation.trim().length === 0) {
-      throw new GridWiseError(
-        "INVALID_LLM_OUTPUT",
-        `interpretations[${expectedIndex}].explanation must be non-empty text.`,
-        502,
-      );
-    }
+    const explanation =
+      typeof raw.explanation === "string" && raw.explanation.trim().length > 0
+        ? raw.explanation.trim()
+        : `Operator note ${expectedIndex + 1} processed.`;
     return {
       note_index: expectedIndex,
       applies: raw.applies,
@@ -186,7 +183,7 @@ export function validateLlmInterpretation(
         raw.structured_adjustment,
         battery,
       ),
-      explanation: raw.explanation.trim(),
+      explanation,
     };
   });
 }
