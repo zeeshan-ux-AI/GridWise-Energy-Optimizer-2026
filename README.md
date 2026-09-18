@@ -56,7 +56,7 @@ Given a 24-hour scheduling horizon comprising **campus load demands**, **rooftop
 
 | Role | Member Name | Academic Credentials | Institution |
 |---|---|---|---|
-| **Team Leader** | **Zeeshan** | Department of Computer Science & Engineering (CSE), **Batch 70** | **Southeast University (SEU)** |
+| **Team Leader** | **Zeeshan** ([@zeeshan-ux-AI](https://github.com/zeeshan-ux-AI)) | Department of Computer Science & Engineering (CSE), **Batch 70** | **Southeast University (SEU)** |
 | **Team Member** | **Sun Howlader** | Department of Computer Science & Engineering (CSE), **Batch 70** | **Southeast University (SEU)** |
 
 ### 🏆 Hackathon Metadata
