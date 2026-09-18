@@ -56,6 +56,9 @@ export class OpenAiLlmInterpreter implements LlmInterpreter {
   }
 
   async interpret(notes: string[], request: OptimizeRequest): Promise<unknown> {
+    if (notes.length === 0) {
+      return { interpretations: [] };
+    }
     try {
       const completion = await this.client.chat.completions.create({
         model: this.model,
