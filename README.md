@@ -1,75 +1,72 @@
-# GridWise Energy Optimizer ⚡
+# GridWise: Autonomous Campus Energy Optimizer ⚡
+
+<div align="center">
 
 [![Build, Test & Publish Docker Image](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions/workflows/docker.yml/badge.svg)](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions/workflows/docker.yml)
-[![Docker Image](https://img.shields.io/badge/Docker-GHCR-blue?logo=docker)](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/pkgs/container/gridwise-energy-optimizer-2026)
-[![Node.js](https://img.shields.io/badge/Node.js-24%20LTS-green?logo=node.js)](https://nodejs.org/)
-[![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![GHCR Container](https://img.shields.io/badge/Docker%20Package-GHCR%20Public-2496ED?logo=docker&logoColor=white)](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
+[![Docker Pulls](https://img.shields.io/badge/docker%20pull-ghcr.io-blue?logo=docker)](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
+[![Test Suite](https://img.shields.io/badge/10%2F10%20Cases-PASSED%20100%25-brightgreen?logo=checkmarx)](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026)
+[![Node.js](https://img.shields.io/badge/Node.js-24%20LTS-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> **Official Competition Submission** for the **BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**.
+**Developed by Team AuraX**  
+*Official Submission for the BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge*
 
-GridWise is an enterprise-grade, containerized HTTP API backend engineered to solve complex campus microgrid dispatch problems. Given a 24-hour horizon of campus load demand, rooftop solar generation forecasts, grid tariffs, battery specs, and free-form natural language operator notes, GridWise deterministically translates operator notes via LLM guardrails, computes the mathematically optimal minimum-cost dispatch schedule using **Mixed-Integer Linear Programming (MILP)**, and performs an independent energy balance replay audit before serving the response.
+[Live GitHub Repository](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) • [Published Docker Package](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) • [CI/CD Pipeline](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions)
 
----
-
-## 🏆 Key Features & Compliance
-
-- **100% Problem Statement Accuracy**: Validated against all official competition sample test cases with exact ground-truth cost matching.
-- **MILP Mathematical Optimization**: Solves constrained continuous energy flows across solar, battery charge/discharge, and grid import minimizing total BDT expenditure.
-- **Deterministic LLM Guardrails**: Converts natural-language instructions into strict JSON directives with bounded safety checks.
-- **Independent Replay Audit**: Validates hourly energy conservation (\(Load = Solar + Discharge + Grid - Charge\)) and battery SOC bounds (\(E_{min} \le E_t \le E_{max}\)).
-- **Production Docker Container**: Multi-stage lightweight build (`node:24-bookworm-slim`), unprivileged `node` user security, native healthcheck, and zero external runtime dependencies.
-- **Automated CI/CD**: Automated GitHub Actions testing, container building, healthcheck verification, and automated publishing to GitHub Container Registry (GHCR).
+</div>
 
 ---
 
-## ⚡ Architecture Pipeline
+## 📋 Table of Contents
 
-```text
-  [ Client Request ]
-         │
-         ▼
-  ┌────────────────────────────────────────────────────────┐
-  │ 1. Request Validation (Zod-level bounds, 24h checks)    │
-  └────────────────────────┬───────────────────────────────┘
-                           │
-                           ▼
-  ┌────────────────────────────────────────────────────────┐
-  │ 2. LLM Operator-Note Parser (OpenAI JSON Structured)  │
-  └────────────────────────┬───────────────────────────────┘
-                           │
-                           ▼
-  ┌────────────────────────────────────────────────────────┐
-  │ 3. Deterministic Safety Guardrails                     │
-  │    - Bounds validation (hour 0-23, reserve <= capacity)│
-  │    - Reverts invalid directives to safe defaults       │
-  └────────────────────────┬───────────────────────────────┘
-                           │
-                           ▼
-  ┌────────────────────────────────────────────────────────┐
-  │ 4. Mixed-Integer Linear Program (MILP Solver)          │
-  │    Objective: min ∑ (GridImport_t * Tariff_t)          │
-  │    Subject to: Battery SOC, Inverter C/D rates, Demand │
-  └────────────────────────┬───────────────────────────────┘
-                           │
-                           ▼
-  ┌────────────────────────────────────────────────────────┐
-  │ 5. Independent Replay Validator                        │
-  │    - Verifies Load = Solar + Discharge + Grid - Charge │
-  │    - Recalculates total cost & peak grid kW            │
-  └────────────────────────┬───────────────────────────────┘
-                           │
-                           ▼
-  [ Verified JSON Response (Status 200) ]
-```
+- [Executive Summary](#-executive-summary)
+- [Team AuraX & Submission Info](#-team-aurax--submission-info)
+- [⚡ Quick Start: 60-Second Judge Evaluation](#-quick-start-60-second-judge-evaluation)
+- [🐳 Published Docker Package & Container Architecture](#-published-docker-package--container-architecture)
+- [🧠 Mathematical Formulation & Optimization Engine](#-mathematical-formulation--optimization-engine)
+- [🛡️ Deterministic LLM Guardrails](#️-deterministic-llm-guardrails)
+- [📊 10/10 Competition Case Benchmark Results](#-1010-competition-case-benchmark-results)
+- [📡 API Specification](#-api-specification)
+- [💻 Local Development & Source Build](#-local-development--source-build)
+- [📂 Project Directory Structure](#-project-directory-structure)
 
 ---
 
-## 🐳 Docker Deployment (Core Focus)
+## 🌟 Executive Summary
 
-The container image is built, verified, and published automatically on GitHub Container Registry (GHCR).
+**GridWise** is a production-grade, containerized energy optimization backend built by **Team AuraX** to tackle the dynamic, multi-constrained energy dispatch problem of a smart university campus.
 
-### 1. Run the Pre-Built Published Container (Instant Start)
-No build tools or repository clone required:
+Given a 24-hour horizon comprising **campus load demands**, **rooftop solar PV generation forecasts**, **dynamic grid tariffs**, **battery storage parameters**, and **unstructured natural-language operator directives**, GridWise:
+
+1. **Interprets operator directives** via structured OpenAI JSON reasoning.
+2. **Enforces deterministic safety guardrails**, preventing hallucinated or physically infeasible directives.
+3. **Formulates and solves a Mixed-Integer Linear Program (MILP)** to find the global minimum BDT electricity cost.
+4. **Performs an independent replay energy balance audit** to mathematically certify that all battery SOC, inverter rate, and energy conservation constraints hold before returning the schedule.
+
+---
+
+## 👥 Team AuraX & Submission Info
+
+| Parameter | Details |
+|---|---|
+| **Team Name** | **AuraX** |
+| **Hackathon** | BUP CSE Fest 2026 |
+| **Challenge Track** | Smart Campus Energy Optimization Challenge |
+| **Repository** | [`zeeshan-ux-AI/GridWise-Energy-Optimizer-2026`](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) |
+| **Published Package** | [`ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest`](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) |
+| **Package Visibility** | **Public** (No authentication required to pull) |
+| **Optimization Method** | Mixed-Integer Linear Programming (MILP) + Simplex Dual Solver |
+| **Test Accuracy** | **10 / 10 (100%)** Official Competition Scenarios Matched |
+
+---
+
+## ⚡ Quick Start: 60-Second Judge Evaluation
+
+Evaluators and judges can test the live system immediately without setting up any build environment or cloning code.
+
+### 1. Run the Pre-Built Container (1 Single Command)
 ```bash
 docker run --rm -p 8080:8080 \
   -e OPENAI_API_KEY="your-openai-api-key" \
@@ -77,110 +74,138 @@ docker run --rm -p 8080:8080 \
   ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest
 ```
 
-Verify the running container:
+### 2. Verify Container Health
 ```bash
 curl http://localhost:8080/health
-# Returns: {"status":"ok"}
+```
+**Expected Response:**
+```json
+{"status":"ok"}
+```
+
+### 3. Run Optimization on Competition Sample Request
+```bash
+# In PowerShell or Bash:
+curl -X POST http://localhost:8080/optimize-energy \
+  -H "Content-Type: application/json" \
+  --data-binary @sample_request.json
 ```
 
 ---
 
-### 2. Run with Docker Compose
-Clone the repository and spin up the complete containerized stack:
+## 🐳 Published Docker Package & Container Architecture
+
+The containerized distribution is engineered following enterprise container standards:
+
+### 📦 GHCR Package Reference
+- **Package URL**: [https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
+- **Direct Pull**:
+  ```bash
+  docker pull ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest
+  ```
+
+### 🔒 Enterprise Docker Architecture
+- **Multi-Stage Build**:
+  - **Stage 1 (`builder`)**: Uses `node:24-bookworm-slim` to compile and bundle `dist/index.mjs` via esbuild.
+  - **Stage 2 (`runner`)**: Strips all devDependencies (`npm ci --omit=dev`), resulting in a minimal attack surface and small image footprint.
+- **Unprivileged Non-Root Execution**: Runs under system user `USER node` (UID 1000) for security hardening.
+- **Native Healthcheck**: Built-in container healthcheck pinging `http://localhost:8080/health` every 20 seconds.
+- **Automated CI/CD**: Every push to `main` triggers GitHub Actions to run the full 10-scenario test suite, build the container, perform runtime container validation, and publish to GHCR.
+
+### Docker Compose Quickstart
 ```bash
-# 1. Clone repository
+# Clone the repository
 git clone https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026.git
 cd GridWise-Energy-Optimizer-2026
 
-# 2. Configure environment
+# Create your .env file
 cp .env.example .env
-# Edit .env and supply your OPENAI_API_KEY
 
-# 3. Start container with Docker Compose
+# Spin up the container
 docker compose up -d
 
-# 4. View real-time container logs
+# Check live logs
 docker compose logs -f
 
-# 5. Stop container
+# Teardown
 docker compose down
 ```
 
 ---
 
-### 3. Build & Run from Source (Local Docker)
-```bash
-# Build Docker image
-npm run docker:build
-# Or directly: docker build -t gridwise-api .
+## 🧠 Mathematical Formulation & Optimization Engine
 
-# Run container with environment file
-docker run --rm -p 8080:8080 --env-file .env gridwise-api
-```
+At each hour \(t \in \{0, 1, \dots, 23\}\), the optimizer decides continuous variables:
+- \(S_t\): Solar energy consumed directly (\(\text{kWh}\))
+- \(C_t\): Battery charge energy (\(\text{kWh}\))
+- \(D_t\): Battery discharge energy (\(\text{kWh}\))
+- \(G_t\): Grid import energy (\(\text{kWh}\))
+- \(E_t\): Battery stored energy / State of Charge (\(\text{kWh}\))
 
----
+### 🎯 Objective Function
+Minimize the total monetary expenditure of grid electricity over the 24-hour scheduling period:
+$$\min \sum_{t=0}^{23} \left( G_t \times \text{Tariff}_t \right)$$
 
-## 💻 Local Development (Non-Docker)
-
-### Prerequisites
-- **Node.js**: >= 20.0.0 (Node 22 or 24 LTS recommended)
-- **npm** or **pnpm**
-
-### Installation & Run
-```bash
-# Install dependencies
-npm install
-
-# Build standalone distribution
-npm run build
-
-# Start production server
-npm start
-```
-The server will start on `http://localhost:8080`.
+### ⚖️ Operational Constraints
+1. **Energy Balance Conservation**:
+   $$S_t + D_t + G_t - C_t = \text{Demand}_t \quad \forall t$$
+2. **Solar PV Availability**:
+   $$0 \le S_t \le \text{SolarAvailable}_t \quad \forall t$$
+3. **Battery Energy Dynamics (SOC Continuity)**:
+   $$E_t = E_{t-1} + C_t - D_t \quad (E_{-1} = E_{\text{initial}})$$
+4. **State of Charge Bounds**:
+   $$E_{\text{min}} \le E_t \le E_{\text{capacity}} \quad \forall t$$
+5. **Inverter C/D Limits**:
+   $$0 \le C_t \le C_{\text{max}}, \quad 0 \le D_t \le D_{\text{max}} \quad \forall t$$
+6. **Non-Simultaneous Charge/Discharge**: Handled by LP optimality since \(Tariff_t > 0\) prevents wasteful circular cycling.
 
 ---
 
-## 🧪 Verification & Test Suite
+## 🛡️ Deterministic LLM Guardrails
 
-### 1. Offline Optimization & Replay Validation (10/10 Test Cases)
-Run the offline verification suite across all 10 official competition scenarios:
+When operators supply natural-language notes such as:
+> *"Keep battery reserve at 150 kWh after 18:00 for evening laboratory loads."*  
+> *"Do not charge between 13:00 and 15:00 due to transformer maintenance."*
+
+GridWise processes notes through a dual-stage safety pipeline:
+
+1. **Stage 1 — Structured Extraction**: OpenAI LLM generates a strictly-typed JSON directive containing `action`, `start_hour`, `end_hour`, and `value`.
+2. **Stage 2 — Deterministic Guardrails**:
+   - `start_hour` and `end_hour` clamped strictly to \([0, 23]\).
+   - Reserve amounts capped to battery capacity \(E_{\text{capacity}}\).
+   - If any directive violates physical feasibility, it is safely converted to a benign fallback without aborting the solver.
+
+---
+
+## 📊 10/10 Competition Case Benchmark Results
+
+Team AuraX’s optimizer was rigorously evaluated against all **10 public test cases** from the official BUP CSE Fest 2026 problem dataset.
+
+| Case ID | Scenario Name | Hours | Total Cost (BDT) | Grid Import (kWh) | Peak Grid (kWh) | Validation Status |
+|---|---|:---:|:---:|:---:|:---:|:---:|
+| **SAMPLE-01** | Standard Weekday Campus | 24 | **38,365** | 2,692.5 | 187.5 | ✅ **100% MATCH** |
+| **SAMPLE-02** | High Solar Summer Peak | 24 | **42,885** | 2,915.0 | 180.0 | ✅ **100% MATCH** |
+| **SAMPLE-03** | Rainy Day Low Generation | 24 | **35,480** | 2,430.0 | 205.0 | ✅ **100% MATCH** |
+| **SAMPLE-04** | Heavy Evening Exam Load | 24 | **40,495** | 2,645.0 | 225.0 | ✅ **100% MATCH** |
+| **SAMPLE-05** | Weekend Idle Campus | 24 | **33,950** | 2,430.0 | 175.0 | ✅ **100% MATCH** |
+| **SAMPLE-06** | Battery Reserve Constraint | 24 | **34,090** | 2,395.0 | 175.0 | ✅ **100% MATCH** |
+| **SAMPLE-07** | Strict Peak-Hour Curfew | 24 | **38,550** | 2,560.0 | 185.0 | ✅ **100% MATCH** |
+| **SAMPLE-08** | Inverter Capacity Bottleneck | 24 | **37,665** | 2,490.0 | 210.0 | ✅ **100% MATCH** |
+| **SAMPLE-09** | Dynamic 3-Tier Tariff | 24 | **34,873** | 2,504.0 | 187.0 | ✅ **100% MATCH** |
+| **SAMPLE-10** | Extreme Stress Test | 24 | **41,620** | 2,715.0 | 190.0 | ✅ **100% MATCH** |
+
+**Offline Validation Command**:
 ```bash
 npm test
-```
-**Output:**
-```text
-==================================================
-GridWise Offline Optimization & Replay Validation
-==================================================
-✅ SAMPLE-01  PASS (Cost: 38365 BDT, Grid: 2692.5 kWh, Peak: 187.5 kWh)
-✅ SAMPLE-02  PASS (Cost: 42885 BDT, Grid: 2915.0 kWh, Peak: 180 kWh)
-✅ SAMPLE-03  PASS (Cost: 35480 BDT, Grid: 2430.0 kWh, Peak: 205 kWh)
-✅ SAMPLE-04  PASS (Cost: 40495 BDT, Grid: 2645.0 kWh, Peak: 225 kWh)
-✅ SAMPLE-05  PASS (Cost: 33950 BDT, Grid: 2430.0 kWh, Peak: 175 kWh)
-✅ SAMPLE-06  PASS (Cost: 34090 BDT, Grid: 2395.0 kWh, Peak: 175 kWh)
-✅ SAMPLE-07  PASS (Cost: 38550 BDT, Grid: 2560.0 kWh, Peak: 185 kWh)
-✅ SAMPLE-08  PASS (Cost: 37665 BDT, Grid: 2490.0 kWh, Peak: 210 kWh)
-✅ SAMPLE-09  PASS (Cost: 34873 BDT, Grid: 2504.0 kWh, Peak: 187 kWh)
-✅ SAMPLE-10  PASS (Cost: 41620 BDT, Grid: 2715.0 kWh, Peak: 190 kWh)
-==================================================
-Result: 10/10 cases PASSED 100%
-==================================================
-```
-
-### 2. TypeScript Static Analysis
-```bash
-npm run typecheck
 ```
 
 ---
 
 ## 📡 API Specification
 
-### 1. Health Check
-```http
-GET /health
-```
+### 1. `GET /health`
+Liveness and readiness probe for container orchestrators.
+
 **Response:**
 ```json
 {
@@ -190,19 +215,16 @@ GET /health
 
 ---
 
-### 2. Optimize Energy Dispatch
-```http
-POST /optimize-energy
-Content-Type: application/json
-```
+### 2. `POST /optimize-energy`
+Dispatches the 24-hour campus energy schedule.
 
-#### Request Format (Excerpt):
+#### Request Schema
 ```json
 {
-  "scenario_id": "CAMPUS-SAMPLE-01",
+  "scenario_id": "CAMPUS-2026-01",
   "operator_notes": [
     "Do not charge the battery between 14:00 and 16:00.",
-    "Keep at least 100 kWh in reserve after 18:00."
+    "Maintain at least 100 kWh reserve after 18:00."
   ],
   "battery": {
     "capacity_kwh": 500,
@@ -218,15 +240,15 @@ Content-Type: application/json
       "solar_kwh": 0,
       "tariff_bdt_per_kwh": 7
     }
-    // ... total 24 hours (0 through 23)
+    // ... exactly 24 entries (hours 0 through 23)
   ]
 }
 ```
 
-#### Response Format (Excerpt):
+#### Response Schema
 ```json
 {
-  "scenario_id": "CAMPUS-SAMPLE-01",
+  "scenario_id": "CAMPUS-2026-01",
   "total_cost_bdt": 38365,
   "total_grid_import_kwh": 2692.5,
   "peak_grid_import_kwh": 187.5,
@@ -239,7 +261,7 @@ Content-Type: application/json
       "grid_import_kwh": 180,
       "battery_soc_kwh": 200
     }
-    // ... 24 hours schedule
+    // ... 24 hours verified schedule
   ],
   "operator_notes_applied": [
     {
@@ -253,7 +275,30 @@ Content-Type: application/json
 
 ---
 
-## 📂 Project Structure
+## 💻 Local Development & Source Build
+
+If you wish to build or run the source code outside Docker:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run test suite
+npm test
+
+# 3. Type check
+npm run typecheck
+
+# 4. Build production bundle
+npm run build
+
+# 5. Start standalone server
+npm start
+```
+
+---
+
+## 📂 Project Directory Structure
 
 ```text
 GridWise-Energy-Optimizer-2026/
@@ -261,44 +306,43 @@ GridWise-Energy-Optimizer-2026/
 │   └── workflows/
 │       └── docker.yml            # CI/CD: Automated Test, Build & GHCR Publish
 ├── src/
-│   ├── app.ts                   # Express server setup & middleware
+│   ├── app.ts                   # Express server configuration
 │   ├── index.ts                 # Standalone HTTP server bootstrap
 │   ├── gridwise/
-│   │   ├── directives.ts        # Operator note directive schemas
-│   │   ├── guardrails.ts        # Safety checks & boundary validation
-│   │   ├── llm.ts               # OpenAI JSON Structured interpretation
-│   │   ├── optimizer.ts         # Mixed-Integer Linear Programming solver
-│   │   ├── replay.ts            # Schedule replay & energy balance auditor
-│   │   ├── request-validation.ts# Schema parser & boundary checks
-│   │   ├── service.ts           # Orchestrator
-│   │   └── types.ts             # Domain types & custom Error classes
+│   │   ├── directives.ts        # Directive schemas & parser
+│   │   ├── guardrails.ts        # Bounds checking & safety enforcement
+│   │   ├── llm.ts               # OpenAI JSON structured caller
+│   │   ├── optimizer.ts         # Mixed-Integer Linear Program solver
+│   │   ├── replay.ts            # Independent energy balance replayer
+│   │   ├── request-validation.ts# Schema parser & payload validator
+│   │   ├── service.ts           # Top-level optimization orchestrator
+│   │   └── types.ts             # Domain interfaces and custom errors
 │   ├── lib/
 │   │   └── logger.ts            # Zero-dependency structured JSON logger
 │   └── routes/
 │       ├── health.ts            # GET /health router
-│       ├── index.ts             # Combined Express routers
+│       ├── index.ts             # Express root route aggregator
 │       └── optimize-energy.ts   # POST /optimize-energy router
 ├── scripts/
-│   └── run_public_cases.mjs     # Competition test runner script
+│   └── run_public_cases.mjs     # Live HTTP test runner
 ├── tests/
 │   ├── fixtures/
 │   │   └── public-cases.json    # 10 Official competition scenarios
 │   └── verify_cases_offline.mjs # 100% offline verification test suite
-├── .dockerignore                # Container build exclusions
-├── .env.example                 # Environment template
-├── .gitignore                   # Version control exclusions
+├── .dockerignore                # Docker build context exclusions
+├── .env.example                 # Environment variables template
+├── .gitignore                   # Git version control exclusions
 ├── Dockerfile                   # Multi-stage production container build
 ├── docker-compose.yml           # Production Docker Compose orchestration
-├── build.mjs                    # esbuild bundler configuration
-├── package.json                 # Node dependencies & npm scripts
-├── sample_request.json          # Pre-built competition payload for testing
+├── build.mjs                    # esbuild production bundler
+├── package.json                 # Project dependencies & npm scripts
+├── sample_request.json          # Ready-to-use competition payload
 └── tsconfig.json                # TypeScript strict configuration
 ```
 
 ---
 
-## 👥 Authors & Acknowledgments
+## 📜 License & Submission Declaration
 
-- **Team**: GridWise Team
-- **Hackathon**: BUP CSE Fest 2026 — Smart Campus Energy Optimization Challenge
-- **License**: MIT
+This project is developed and submitted by **Team AuraX** for the **BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**.  
+Licensed under the [MIT License](LICENSE).
