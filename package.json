@@ -1,0 +1,35 @@
+{
+  "name": "gridwise-energy-optimizer",
+  "version": "1.0.0",
+  "description": "GridWise LLM-Assisted Campus Energy Optimizer (BUP CSE Fest 2026)",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "node ./build.mjs",
+    "start": "node --enable-source-maps ./dist/index.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx tests/verify_cases_offline.mjs",
+    "test:cases": "node ./scripts/run_public_cases.mjs",
+    "docker:build": "docker build -t gridwise-api .",
+    "docker:run": "docker run --rm -p 8080:8080 --env-file .env gridwise-api",
+    "docker:compose": "docker compose up --build"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "javascript-lp-solver": "^1.0.3",
+    "openai": "^7.17.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.13.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
