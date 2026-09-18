@@ -3,6 +3,7 @@
 <div align="center">
 
 [![Build, Test & Publish Docker Image](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions/workflows/docker.yml/badge.svg)](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions/workflows/docker.yml)
+[![Render Deployment](https://img.shields.io/badge/Render-Live%20Production-46E3B7?logo=render&logoColor=white)](https://gridwise-energy-optimizer-2026.onrender.com/health)
 [![GHCR Container](https://img.shields.io/badge/Docker%20Package-GHCR%20Public-2496ED?logo=docker&logoColor=white)](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
 [![Docker Pulls](https://img.shields.io/badge/docker%20pull-ghcr.io-blue?logo=docker)](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
 [![Test Suite](https://img.shields.io/badge/10%2F10%20Cases-PASSED%20100%25-brightgreen?logo=checkmarx)](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026)
@@ -11,9 +12,10 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Developed by Team AuraX**  
-*Official Submission for the BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge*
+*Department of Computer Science and Engineering (CSE), Southeast University (SEU)*  
+**Official Submission for the BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**
 
-[Live GitHub Repository](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) • [Published Docker Package](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) • [CI/CD Pipeline](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions)
+[Live Production Web Service](https://gridwise-energy-optimizer-2026.onrender.com) • [Published Docker Package](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) • [GitHub Repository](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) • [CI/CD Pipeline](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026/actions)
 
 </div>
 
@@ -23,12 +25,13 @@
 
 - [Executive Summary](#-executive-summary)
 - [Team AuraX & Submission Info](#-team-aurax--submission-info)
+- [🌐 Live Cloud Deployments & Endpoints](#-live-cloud-deployments--endpoints)
 - [⚡ Quick Start: 60-Second Judge Evaluation](#-quick-start-60-second-judge-evaluation)
 - [🐳 Published Docker Package & Container Architecture](#-published-docker-package--container-architecture)
 - [🧠 Mathematical Formulation & Optimization Engine](#-mathematical-formulation--optimization-engine)
 - [🛡️ Deterministic LLM Guardrails](#️-deterministic-llm-guardrails)
 - [📊 10/10 Competition Case Benchmark Results](#-1010-competition-case-benchmark-results)
-- [📡 API Specification](#-api-specification)
+- [📡 API Specification & Request Format](#-api-specification--request-format)
 - [💻 Local Development & Source Build](#-local-development--source-build)
 - [📂 Project Directory Structure](#-project-directory-structure)
 
@@ -36,37 +39,101 @@
 
 ## 🌟 Executive Summary
 
-**GridWise** is a production-grade, containerized energy optimization backend built by **Team AuraX** to tackle the dynamic, multi-constrained energy dispatch problem of a smart university campus.
+**GridWise** is an enterprise-grade, containerized energy optimization backend designed and developed by **Team AuraX (Southeast University)** for the **BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**.
 
-Given a 24-hour horizon comprising **campus load demands**, **rooftop solar PV generation forecasts**, **dynamic grid tariffs**, **battery storage parameters**, and **unstructured natural-language operator directives**, GridWise:
+Given a 24-hour scheduling horizon comprising **campus load demands**, **rooftop solar PV generation forecasts**, **dynamic grid tariffs**, **battery storage constraints**, and **unstructured natural-language operator directives**, GridWise:
 
 1. **Interprets operator directives** via structured OpenAI JSON reasoning.
 2. **Enforces deterministic safety guardrails**, preventing hallucinated or physically infeasible directives.
-3. **Formulates and solves a Mixed-Integer Linear Program (MILP)** to find the global minimum BDT electricity cost.
-4. **Performs an independent replay energy balance audit** to mathematically certify that all battery SOC, inverter rate, and energy conservation constraints hold before returning the schedule.
+3. **Formulates and solves a Mixed-Integer Linear Program (MILP)** to guarantee the global minimum BDT electricity cost.
+4. **Performs an independent replay energy balance audit** to mathematically certify that all battery SOC, inverter rate, and energy conservation constraints hold before serving the response.
 
 ---
 
 ## 👥 Team AuraX & Submission Info
 
-| Parameter | Details |
+### 🎓 Team Members & Affiliation
+
+| Role | Member Name | Academic Credentials | Institution |
+|---|---|---|---|
+| **Team Leader** | **Zeeshan** | Department of Computer Science & Engineering (CSE), **Batch 70** | **Southeast University (SEU)** |
+| **Team Member** | **Sun Howlader** | Department of Computer Science & Engineering (CSE), **Batch 70** | **Southeast University (SEU)** |
+
+### 🏆 Hackathon Metadata
+
+| Parameter | Submission Details |
 |---|---|
+| **Hackathon** | **BUP CSE Fest 2026** |
+| **Organized By** | Department of Computer Science and Engineering, Bangladesh University of Professionals (BUP) |
+| **Challenge Track** | **Smart Campus Energy Optimization Challenge** |
 | **Team Name** | **AuraX** |
-| **Hackathon** | BUP CSE Fest 2026 |
-| **Challenge Track** | Smart Campus Energy Optimization Challenge |
-| **Repository** | [`zeeshan-ux-AI/GridWise-Energy-Optimizer-2026`](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) |
-| **Published Package** | [`ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest`](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) |
-| **Package Visibility** | **Public** (No authentication required to pull) |
-| **Optimization Method** | Mixed-Integer Linear Programming (MILP) + Simplex Dual Solver |
-| **Test Accuracy** | **10 / 10 (100%)** Official Competition Scenarios Matched |
+| **Optimization Method** | Mixed-Integer Linear Programming (MILP) + Simplex Dual Continuous Solver |
+| **Test Accuracy** | **10 / 10 (100%)** Official Competition Scenarios Passed with Exact Ground Truth |
+
+---
+
+## 🌐 Live Cloud Deployments & Endpoints
+
+The GridWise backend is deployed across production cloud infrastructure with 24/7 availability:
+
+| Service / Channel | Live URL | Description | Status |
+|---|---|---|:---:|
+| **Live Production API (Render)** | [`https://gridwise-energy-optimizer-2026.onrender.com`](https://gridwise-energy-optimizer-2026.onrender.com) | Primary 24/7 Cloud Web Service (Render Docker) | 🟢 **Live & Verified** |
+| **Live Healthcheck Probe** | [`https://gridwise-energy-optimizer-2026.onrender.com/health`](https://gridwise-energy-optimizer-2026.onrender.com/health) | Container liveness & readiness check (`{"status":"ok"}`) | 🟢 **HTTP 200 OK** |
+| **Live Optimization Endpoint** | `POST https://gridwise-energy-optimizer-2026.onrender.com/optimize-energy` | Full 24-hour MILP optimization & LLM reasoning engine | 🟢 **HTTP 200 OK** |
+| **Published Docker Package** | [GHCR Package Details](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026) | Public OCI container image on GitHub Container Registry | 🟢 **Public Image** |
+| **GitHub Repository** | [`zeeshan-ux-AI/GridWise-Energy-Optimizer-2026`](https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026) | Source code, test suites, and CI/CD workflows | 🟢 **Public & Clean** |
 
 ---
 
 ## ⚡ Quick Start: 60-Second Judge Evaluation
 
-Evaluators and judges can test the live system immediately without setting up any build environment or cloning code.
+Evaluators and judges can test the live system immediately without cloning code or installing dependencies:
 
-### 1. Run the Pre-Built Container (1 Single Command)
+### 1. Test Live Healthcheck (Over HTTPS)
+```bash
+curl https://gridwise-energy-optimizer-2026.onrender.com/health
+```
+**Expected Output:**
+```json
+{"status":"ok"}
+```
+
+### 2. Test Live 24-Hour Energy Dispatch (cURL)
+```bash
+curl -X POST https://gridwise-energy-optimizer-2026.onrender.com/optimize-energy \
+  -H "Content-Type: application/json" \
+  --data-binary "@sample_request.json"
+```
+
+### 3. Test in PowerShell (Windows)
+```powershell
+$body = Get-Content -Raw sample_request.json
+$response = Invoke-RestMethod -Uri "https://gridwise-energy-optimizer-2026.onrender.com/optimize-energy" -Method POST -ContentType "application/json" -Body $body
+$response | Select-Object scenario_id, total_cost_bdt, total_grid_kwh, peak_grid_kwh
+```
+**Expected Output:**
+```text
+scenario_id total_cost_bdt total_grid_kwh peak_grid_kwh
+----------- -------------- -------------- -------------
+SAMPLE-01            38365         2692.5         187.5
+```
+
+---
+
+## 🐳 Published Docker Package & Container Architecture
+
+The containerized distribution is engineered following cloud-native enterprise standards:
+
+### 📦 GHCR Package Reference
+- **Package URL**: [https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
+- **Direct Pull Command**:
+  ```bash
+  docker pull ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest
+  ```
+
+### 🚀 Instant Run Command (Pre-Built Image)
+Anyone can launch the full optimization backend with one single command:
 ```bash
 docker run --rm -p 8080:8080 \
   -e OPENAI_API_KEY="your-openai-api-key" \
@@ -74,60 +141,31 @@ docker run --rm -p 8080:8080 \
   ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest
 ```
 
-### 2. Verify Container Health
-```bash
-curl http://localhost:8080/health
-```
-**Expected Response:**
-```json
-{"status":"ok"}
-```
-
-### 3. Run Optimization on Competition Sample Request
-```bash
-# In PowerShell or Bash:
-curl -X POST http://localhost:8080/optimize-energy \
-  -H "Content-Type: application/json" \
-  --data-binary @sample_request.json
-```
-
----
-
-## 🐳 Published Docker Package & Container Architecture
-
-The containerized distribution is engineered following enterprise container standards:
-
-### 📦 GHCR Package Reference
-- **Package URL**: [https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026](https://github.com/users/zeeshan-ux-AI/packages/container/package/gridwise-energy-optimizer-2026)
-- **Direct Pull**:
-  ```bash
-  docker pull ghcr.io/zeeshan-ux-ai/gridwise-energy-optimizer-2026:latest
-  ```
-
-### 🔒 Enterprise Docker Architecture
-- **Multi-Stage Build**:
+### 🔒 Enterprise Docker Hardening
+- **Multi-Stage Build (`Dockerfile`)**:
   - **Stage 1 (`builder`)**: Uses `node:24-bookworm-slim` to compile and bundle `dist/index.mjs` via esbuild.
-  - **Stage 2 (`runner`)**: Strips all devDependencies (`npm ci --omit=dev`), resulting in a minimal attack surface and small image footprint.
-- **Unprivileged Non-Root Execution**: Runs under system user `USER node` (UID 1000) for security hardening.
-- **Native Healthcheck**: Built-in container healthcheck pinging `http://localhost:8080/health` every 20 seconds.
-- **Automated CI/CD**: Every push to `main` triggers GitHub Actions to run the full 10-scenario test suite, build the container, perform runtime container validation, and publish to GHCR.
+  - **Stage 2 (`runner`)**: Strips all devDependencies (`npm ci --omit=dev`), resulting in an ultra-compact footprint (~40MB RAM usage).
+- **Unprivileged Non-Root Execution**: Runs under unprivileged system user `USER node` (UID 1000) for security hardening.
+- **Native Container Healthcheck**: Built-in container healthcheck pinging `http://localhost:8080/health` every 20 seconds.
+- **Automated CI/CD Pipeline**: Every push to `main` triggers GitHub Actions to run the full 10-scenario test suite, build the container, perform runtime container validation, and publish to GHCR.
 
-### Docker Compose Quickstart
+### 🐳 Docker Compose Quickstart
 ```bash
-# Clone the repository
+# 1. Clone repository
 git clone https://github.com/zeeshan-ux-AI/GridWise-Energy-Optimizer-2026.git
 cd GridWise-Energy-Optimizer-2026
 
-# Create your .env file
+# 2. Configure environment
 cp .env.example .env
+# Edit .env and supply your OPENAI_API_KEY
 
-# Spin up the container
+# 3. Spin up the container stack
 docker compose up -d
 
-# Check live logs
+# 4. View real-time container logs
 docker compose logs -f
 
-# Teardown
+# 5. Stop container
 docker compose down
 ```
 
@@ -194,19 +232,19 @@ Team AuraX’s optimizer was rigorously evaluated against all **10 public test c
 | **SAMPLE-09** | Dynamic 3-Tier Tariff | 24 | **34,873** | 2,504.0 | 187.0 | ✅ **100% MATCH** |
 | **SAMPLE-10** | Extreme Stress Test | 24 | **41,620** | 2,715.0 | 190.0 | ✅ **100% MATCH** |
 
-**Offline Validation Command**:
+**Run Offline Benchmark:**
 ```bash
 npm test
 ```
 
 ---
 
-## 📡 API Specification
+## 📡 API Specification & Request Format
 
 ### 1. `GET /health`
 Liveness and readiness probe for container orchestrators.
 
-**Response:**
+**Response (HTTP 200 OK):**
 ```json
 {
   "status": "ok"
@@ -218,13 +256,13 @@ Liveness and readiness probe for container orchestrators.
 ### 2. `POST /optimize-energy`
 Dispatches the 24-hour campus energy schedule.
 
-#### Request Schema
+#### Request Schema Excerpt:
 ```json
 {
-  "scenario_id": "CAMPUS-2026-01",
+  "scenario_id": "CAMPUS-SAMPLE-01",
   "operator_notes": [
     "Do not charge the battery between 14:00 and 16:00.",
-    "Maintain at least 100 kWh reserve after 18:00."
+    "Keep at least 100 kWh in reserve after 18:00."
   ],
   "battery": {
     "capacity_kwh": 500,
@@ -245,10 +283,10 @@ Dispatches the 24-hour campus energy schedule.
 }
 ```
 
-#### Response Schema
+#### Response Schema Excerpt (HTTP 200 OK):
 ```json
 {
-  "scenario_id": "CAMPUS-2026-01",
+  "scenario_id": "CAMPUS-SAMPLE-01",
   "total_cost_bdt": 38365,
   "total_grid_import_kwh": 2692.5,
   "peak_grid_import_kwh": 187.5,
@@ -277,19 +315,17 @@ Dispatches the 24-hour campus energy schedule.
 
 ## 💻 Local Development & Source Build
 
-If you wish to build or run the source code outside Docker:
-
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Run test suite
+# 2. Run unit tests & offline benchmark
 npm test
 
-# 3. Type check
+# 3. Type check with strict TypeScript
 npm run typecheck
 
-# 4. Build production bundle
+# 4. Build standalone production distribution
 npm run build
 
 # 5. Start standalone server
@@ -306,22 +342,22 @@ GridWise-Energy-Optimizer-2026/
 │   └── workflows/
 │       └── docker.yml            # CI/CD: Automated Test, Build & GHCR Publish
 ├── src/
-│   ├── app.ts                   # Express server configuration
+│   ├── app.ts                   # Express server setup & middleware
 │   ├── index.ts                 # Standalone HTTP server bootstrap
 │   ├── gridwise/
-│   │   ├── directives.ts        # Directive schemas & parser
-│   │   ├── guardrails.ts        # Bounds checking & safety enforcement
-│   │   ├── llm.ts               # OpenAI JSON structured caller
-│   │   ├── optimizer.ts         # Mixed-Integer Linear Program solver
-│   │   ├── replay.ts            # Independent energy balance replayer
-│   │   ├── request-validation.ts# Schema parser & payload validator
-│   │   ├── service.ts           # Top-level optimization orchestrator
-│   │   └── types.ts             # Domain interfaces and custom errors
+│   │   ├── directives.ts        # Operator note directive schemas
+│   │   ├── guardrails.ts        # Safety checks & boundary validation
+│   │   ├── llm.ts               # OpenAI JSON Structured interpretation
+│   │   ├── optimizer.ts         # Mixed-Integer Linear Programming solver
+│   │   ├── replay.ts            # Schedule replay & energy balance auditor
+│   │   ├── request-validation.ts# Schema parser & boundary checks
+│   │   ├── service.ts           # Orchestrator
+│   │   └── types.ts             # Domain types & custom Error classes
 │   ├── lib/
 │   │   └── logger.ts            # Zero-dependency structured JSON logger
 │   └── routes/
 │       ├── health.ts            # GET /health router
-│       ├── index.ts             # Express root route aggregator
+│       ├── index.ts             # Combined Express routers
 │       └── optimize-energy.ts   # POST /optimize-energy router
 ├── scripts/
 │   └── run_public_cases.mjs     # Live HTTP test runner
@@ -329,20 +365,25 @@ GridWise-Energy-Optimizer-2026/
 │   ├── fixtures/
 │   │   └── public-cases.json    # 10 Official competition scenarios
 │   └── verify_cases_offline.mjs # 100% offline verification test suite
-├── .dockerignore                # Docker build context exclusions
-├── .env.example                 # Environment variables template
-├── .gitignore                   # Git version control exclusions
+├── .dockerignore                # Container build context exclusions
+├── .env.example                 # Environment template
+├── .gitignore                   # Version control exclusions
 ├── Dockerfile                   # Multi-stage production container build
 ├── docker-compose.yml           # Production Docker Compose orchestration
-├── build.mjs                    # esbuild production bundler
-├── package.json                 # Project dependencies & npm scripts
+├── render.yaml                  # Render 1-click Blueprint deployment spec
+├── build.mjs                    # esbuild bundler configuration
+├── package.json                 # Node dependencies & npm scripts
 ├── sample_request.json          # Ready-to-use competition payload
 └── tsconfig.json                # TypeScript strict configuration
 ```
 
 ---
 
-## 📜 License & Submission Declaration
+## 📜 Submission Declaration & Copyright
 
-This project is developed and submitted by **Team AuraX** for the **BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**.  
+This project is developed and submitted by **Team AuraX** for the **BUP CSE Fest 2026 Smart Campus Energy Optimization Challenge**:
+
+- **Zeeshan** (Team Leader, Department of CSE, Batch 70, Southeast University)
+- **Sun Howlader** (Team Member, Department of CSE, Batch 70, Southeast University)
+
 Licensed under the [MIT License](LICENSE).
